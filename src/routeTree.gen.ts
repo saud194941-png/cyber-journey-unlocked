@@ -9,38 +9,92 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsRouteImport } from './routes/tools'
+import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DaysIndexRouteImport } from './routes/days.index'
+import { Route as DaysDayIdRouteImport } from './routes/days.$dayId'
 
+const ToolsRoute = ToolsRouteImport.update({
+  id: '/tools',
+  path: '/tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DaysIndexRoute = DaysIndexRouteImport.update({
+  id: '/days/',
+  path: '/days/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DaysDayIdRoute = DaysDayIdRouteImport.update({
+  id: '/days/$dayId',
+  path: '/days/$dayId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/tools': typeof ToolsRoute
+  '/days/$dayId': typeof DaysDayIdRoute
+  '/days/': typeof DaysIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/tools': typeof ToolsRoute
+  '/days/$dayId': typeof DaysDayIdRoute
+  '/days': typeof DaysIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRoute
+  '/tools': typeof ToolsRoute
+  '/days/$dayId': typeof DaysDayIdRoute
+  '/days/': typeof DaysIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/articles' | '/tools' | '/days/$dayId' | '/days/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/articles' | '/tools' | '/days/$dayId' | '/days'
+  id: '__root__' | '/' | '/articles' | '/tools' | '/days/$dayId' | '/days/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArticlesRoute: typeof ArticlesRoute
+  ToolsRoute: typeof ToolsRoute
+  DaysDayIdRoute: typeof DaysDayIdRoute
+  DaysIndexRoute: typeof DaysIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools': {
+      id: '/tools'
+      path: '/tools'
+      fullPath: '/tools'
+      preLoaderRoute: typeof ToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +102,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/days/': {
+      id: '/days/'
+      path: '/days'
+      fullPath: '/days/'
+      preLoaderRoute: typeof DaysIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/days/$dayId': {
+      id: '/days/$dayId'
+      path: '/days/$dayId'
+      fullPath: '/days/$dayId'
+      preLoaderRoute: typeof DaysDayIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArticlesRoute: ArticlesRoute,
+  ToolsRoute: ToolsRoute,
+  DaysDayIdRoute: DaysDayIdRoute,
+  DaysIndexRoute: DaysIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
