@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowLeft, AlertTriangle, Lightbulb, BookOpen, Clock, Award, ChevronLeft, ChevronRight, ListOrdered, Sparkles, HelpCircle } from "lucide-react";
-import { getDay, days } from "@/lib/days-data";
+import { getDay, days, type DayData } from "@/lib/days-data";
 import { ReadingProgress } from "@/components/ReadingProgress";
 
 export const Route = createFileRoute("/days/$dayId")({
@@ -34,7 +34,7 @@ export const Route = createFileRoute("/days/$dayId")({
 });
 
 function DayPage() {
-  const day = Route.useLoaderData();
+  const day = Route.useLoaderData() as DayData;
   const prev = days.find((d) => d.number === day.number - 1);
   const next = days.find((d) => d.number === day.number + 1);
 
